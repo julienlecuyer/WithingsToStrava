@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Withings To Strava</string>
+    <string name="title_activity_withings_activities">WithingsActivitiesActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="strava_header">Strava Account</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Sync Preferences -->
+    <string name="strava_connect_title">Strava account connection</string>
+    <string name="strava_connect_on">Your strava account is connected</string>
+    <string name="strava_connect_off">Click to connect your Strava account</string>
+    <string name="login_label">Login</string>
+    <string name="password_label">Password</string>
+    <string name="log_in_button_label">Log in</string>
+</resources>

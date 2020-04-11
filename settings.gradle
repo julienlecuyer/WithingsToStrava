@@ -1,0 +1,2 @@
+rootProject.name='Withings To Strava'
+include ':app'

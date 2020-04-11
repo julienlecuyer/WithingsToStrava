@@ -1,0 +1,11 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/strava_header">
+        <SwitchPreferenceCompat
+            app:key="strava_connect"
+            app:icon="@mipmap/strava_icon_foreground"
+            app:summaryOff="@string/strava_connect_off"
+            app:summaryOn="@string/strava_connect_on"
+            app:title="@string/strava_connect_title" />
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ctrl.LoginActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/activity_login_title_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:gravity="center_horizontal"
+        android:padding="20dp"
+        android:textSize="30sp"
+        android:textColor="#00B8D4"
+        android:textStyle="bold"
+        android:text="@string/app_name" />
+
+    <EditText
+        android:id="@+id/activity_login_login_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:padding="20dp"
+        android:inputType="textEmailAddress"
+        android:hint="@string/login_label"/>
+    <EditText
+        android:id="@+id/activity_login_pw_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:padding="20dp"
+        android:hint="@string/password_label"
+        android:inputType="textPassword"/>
+    <Button
+        android:id="@+id/activity_login_logIn_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:padding="15dp"
+        android:layout_gravity="center_horizontal"
+        android:background="#B2EBF2"
+        android:text="@string/log_in_button_label"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"/>
+</LinearLayout>
