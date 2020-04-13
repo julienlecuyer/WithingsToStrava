@@ -6,6 +6,7 @@
             app:icon="@mipmap/strava_icon_foreground"
             app:summaryOff="@string/strava_connect_off"
             app:summaryOn="@string/strava_connect_on"
-            app:title="@string/strava_connect_title" />
+            app:title="@string/strava_connect_title"
+            app:defaultValue="false"/>
     </PreferenceCategory>
 </PreferenceScreen>

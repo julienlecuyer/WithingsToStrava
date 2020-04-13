@@ -14,7 +14,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.*;
@@ -53,7 +55,7 @@ public class WithingsWebservice {
 		// store connection data
 		try {
 			final String urlParameters = this.formatParams(params);
-			final JSONObject authData = new JSONObject(this.post("/cgi-bin/auth", urlParameters));
+			final JSONObject authData = new JSONObject(Objects.requireNonNull(this.post("/cgi-bin/auth", urlParameters)));
 			this.sessionId = authData.getJSONObject("body").getString("sessionid");
 			this.accountId = authData.getJSONObject("body").getJSONArray("account").getJSONObject(0).getInt("id");
 			result = this.getUserDatas();
@@ -66,7 +68,7 @@ public class WithingsWebservice {
 		return result;
 	}
 
-	public JSONObject getUserDatas() throws UnsupportedEncodingException, JSONException {
+	private JSONObject getUserDatas() throws UnsupportedEncodingException, JSONException {
 		final HashMap<String, String> params = new HashMap<String, String>();
 
 		params.put("enrich", "t");
@@ -82,7 +84,7 @@ public class WithingsWebservice {
 		params.put("sessionid", this.sessionId);
 
 		final String urlParameters = this.formatParams(params);
-		final JSONObject authData = new JSONObject(this.post("/cgi-bin/account", urlParameters));
+		final JSONObject authData = new JSONObject(Objects.requireNonNull(this.post("/cgi-bin/account", urlParameters)));
 
 		return authData.getJSONObject("body").getJSONArray("users").getJSONObject(0);
 	}
@@ -91,7 +93,7 @@ public class WithingsWebservice {
 
 		if (this.userId != null && this.sessionId != null) {
 			final HashMap<String, String> params = new HashMap<String, String>();
-			final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.FRENCH);
 			params.put("action", "getbyuserid");
 			params.put("userid", Integer.toString(this.userId));
 			params.put("startdateymd", "2020-01-01");
@@ -104,7 +106,7 @@ public class WithingsWebservice {
 
 			final String urlParameters = this.formatParams(params);
 
-			final JSONObject json = new JSONObject(this.post("/cgi-bin/v2/activity", urlParameters));
+			final JSONObject json = new JSONObject(Objects.requireNonNull(this.post("/cgi-bin/v2/activity", urlParameters)));
 			return json.getJSONObject("body").getJSONArray("series");
 		} else {
 			throw new IllegalStateException("No connection detected");
@@ -131,7 +133,7 @@ public class WithingsWebservice {
 
 			final String urlParameters = this.formatParams(params);
 
-			final JSONArray jsonA = new JSONObject(this.post("/cgi-bin/v2/measure", urlParameters))
+			final JSONArray jsonA = new JSONObject(Objects.requireNonNull(this.post("/cgi-bin/v2/measure", urlParameters)))
 					.getJSONObject("body").getJSONArray("series");
 			if (jsonA.length() > 0) {
                 final JSONObject json = jsonA.getJSONObject(0);

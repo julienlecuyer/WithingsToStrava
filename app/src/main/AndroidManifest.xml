@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="ovh.jujulacuillere.withingstostrava">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,14 +15,38 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="ovh.jujulacuillere.withingstostrava.ctrl.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_settings"
+            tools:ignore="LockedOrientationActivity" />
         <activity android:name="ovh.jujulacuillere.withingstostrava.ctrl.withingsactivities.WithingsActivitiesActivity" />
-        <activity android:name="ovh.jujulacuillere.withingstostrava.ctrl.stravaconnection.StravaConnectActivity" />
-        <activity android:name="ovh.jujulacuillere.withingstostrava.ctrl.LoginActivity">
+        <activity android:name="ovh.jujulacuillere.withingstostrava.ctrl.LoginActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="net.openid.appauth.RedirectUriReceiverActivity"
+            tools:node="replace"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            tools:ignore="LockedOrientationActivity">
+            <tools:validation testUrl="https://www.jujulacuillere.ovh/withingstostrava" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="www.jujulacuillere.ovh"
+                    android:pathPrefix="/withingstostrava" />
             </intent-filter>
         </activity>
     </application>

@@ -1,18 +1,45 @@
 package ovh.jujulacuillere.withingstostrava.ctrl.withingsactivities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+
+import net.openid.appauth.AppAuthConfiguration;
+import net.openid.appauth.AuthState;
+import net.openid.appauth.AuthorizationException;
+import net.openid.appauth.AuthorizationService;
+import net.openid.appauth.browser.BrowserWhitelist;
+import net.openid.appauth.browser.VersionedBrowserMatcher;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+
 import ovh.jujulacuillere.withingstostrava.R;
 import ovh.jujulacuillere.withingstostrava.ctrl.SettingsActivity;
+import ovh.jujulacuillere.withingstostrava.ctrl.stravaapi.StravaWebservice;
 import ovh.jujulacuillere.withingstostrava.fitexporter.FitExporter;
 import ovh.jujulacuillere.withingstostrava.model.WithingsActivity;
 import ovh.jujulacuillere.withingstostrava.model.WithingsUser;
@@ -74,8 +101,51 @@ public class WithingsActivitiesActivity extends AppCompatActivity {
             public void onClick(View v) {
                 FitExporter exporter = new FitExporter();
                 String fileName = Long.toString(a.getId()) + FIT_EXT;
-                exporter.exportFit(a, new java.io.File(getApplicationInfo().dataDir, fileName));
+                File file = new java.io.File(getDataDir(), fileName);
+                exporter.exportFit(a, file);
+
+                try {
+                    AppAuthConfiguration appAuthConfig = new AppAuthConfiguration.Builder()
+                            .setBrowserMatcher(new BrowserWhitelist(VersionedBrowserMatcher.CHROME_BROWSER)).build();
+                   AuthorizationService authService = new AuthorizationService(WithingsActivitiesActivity.this, appAuthConfig);
+                    WithingsActivitiesActivity.this.readAuthState().performActionWithFreshTokens(authService, new AuthState.AuthStateAction() {
+                        @Override public void execute(
+                                String accessToken,
+                                String idToken,
+                                AuthorizationException ex) {
+                            if (ex != null) {
+                                ex.printStackTrace();
+                                // negotiation for fresh tokens failed, check ex for more details
+                            } else {
+                                WithingsActivitiesActivity.this.createActivity(accessToken, file);
+                            }
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         };
+    }
+
+    private void createActivity(String accessToken, File file) {
+        StravaWebservice sws = new StravaWebservice(accessToken);
+        try {
+            sws.createActivity(file);
+        } catch (UnsupportedEncodingException | JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @NonNull
+    public AuthState readAuthState() throws JSONException {
+        SharedPreferences authPrefs = getSharedPreferences("stravaAuth", MODE_PRIVATE);
+        String stateJson = authPrefs.getString("stateJson", null);
+        AuthState state;
+        if (stateJson != null) {
+            return AuthState.jsonDeserialize(stateJson);
+        } else {
+            return new AuthState();
+        }
     }
 }
